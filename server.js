@@ -43,6 +43,21 @@ app.post('/add-marks', (req, res) => {
   });
 });
 
+app.put('/update-marks/:id', (req, res) => {
+  const { id } = req.params;
+  const { sub1, sub2, sub3, sub4, sub5 } = req.body;
+  console.log(req.body)
+  // SQL query to insert marks into the table
+  const query = 'UPDATE marks SET sub1=?, sub2=?, sub3=?, sub4=?, sub5=? WHERE id = ?';
+  db.query(query, [sub1, sub2, sub3, sub4, sub5, id], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Error updating marks' });
+    }
+    res.status(200).json({ message: 'Marks updated successfully' });
+  });
+});
+
 // Endpoint to fetch all marks from the database
 app.get('/fetch-marks', (req, res) => {
   db.query('SELECT * FROM marks', (err, result) => {
